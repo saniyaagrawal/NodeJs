@@ -3,55 +3,36 @@ const morgan=require('morgan');
 const http = require('http');
 const bodyParser= require('body-parser');
 
+const dishRouter = require('./routes/dishRouter');
+
 const hostname='localhost';
 const port=3000;
 
 const app=express();
 
 app.use(morgan('dev'));
+
+
+app.use('/dishes', dishRouter);
 app.use(express.static(__dirname+'/public'));
 app.use(bodyParser.json());
+// app.get('/dishes/:dishId', (req,res,next)=> {
+//     res.end('get dish'+ req.params.dishId);
+// });
 
-app.all('/dishes', (req,res,next)=> {
-    res.statusCode=200;
-    res.setHeader('Content-Type','text/plain');
-    next();
-});
+// app.put('/dishes/:dishId', (req,res,next)=> {
+//     res.write('put dish'+ req.params.dishId);
+//     res.end('with details'+req.body.name+ 'and' +req.body.description)
+// });
 
-app.get('/dishes', (req,res,next)=> {
-    res.end('get all dishes');
-});
+// app.post('/dishes/:dishId', (req,res,next)=> {
+//     res.statusCode=403;
+//     res.end('Not supported post');
+// });
 
-app.put('/dishes', (req,res,next)=> {
-    res.statusCode=403;
-    res.end('put not supported: ');
-});
-
-app.post('/dishes', (req,res,next)=> {
-    res.end('posting: '+req.body.name+ 'with' +req.body.description);
-});
-
-app.delete('/dishes', (req,res,next)=> {
-    res.end('delete all dishes');
-});
-
-app.get('/dishes/:dishId', (req,res,next)=> {
-    res.end('get dish'+ req.params.dishId);
-});
-
-app.put('/dishes/:dishId', (req,res,next)=> {
-    res.write('put dish'+ req.params.dishId);
-    res.end('with details'+req.body.name+ 'and' +req.body.description)
-});
-
-app.post('/dishes/:dishId', (req,res,next)=> {
-    res.statusCode=403;
-    res.end('Not supported post');
-});
-
-app.delete('/dishes/:dishId', (req,res,next)=> {
-    res.end('delete');
-});
+// app.delete('/dishes/:dishId', (req,res,next)=> {
+//     res.end('delete');
+// });
 
 app.use((req,res,next)=> {
     res.statusCode=200;
